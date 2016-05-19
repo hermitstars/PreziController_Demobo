@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>controller sandbox</title>
+        <style>
+            body {
+                padding: 20px;
+            }
+            
+            div {
+                margin: 20px;
+            }
+			#demoboClose, #settings, #demoboHelpPage {
+				display: none;
+			}
+        </style>
+        <!-- include jQuery and demobo library-->
+        <link rel="stylesheet" type="text/css" href="http://api.demobo.com/app.css"/>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
+        </script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js">
+        </script>
+        <script type="text/javascript" src="http://api.demobo.com/demobo.1.6.2.min.js">
+        </script>
+        <!-- include jQuery and demobo library -->
+        <script type="text/javascript" src="/tools/sandbox.js">
+        </script>
+        <script src="http://prezi.github.io/prezi-player/lib/PreziPlayer/prezi_player.js"></script>      
+
+</head>
+<body>
+
+ <div id="prezi-player" class="player" style="width: 1024px;height: 768px;"></div>
+
+ <div class="span4" style= "width: 300px">
+		<ul class="nav nav-list" id="sidebar-nav">
+			<li id="link0"><a href="#0"><strong>Home</strong></a></li>
+			<li id="link1"><a href="#1">&nbsp;Design</a></li>
+			<li id="link2"><a href="#2">&nbsp;Implementation</a></li>
+			<li id="link3"><a href="#3">&nbsp;Progress</a></li>
+			<li id="link4"><a href="#4">&nbsp;Future work</a></li>
+			<li id="link5"><a href="#5">&nbsp;Conclusion</a></li>
+		</ul>
+	</div>
+	  
+<div id="info">
+    <div>
+      Prezi status/Title:<br/>
+	    <input id="i-title" value="Loading..." style="width: 550px; font-size: 12px;" disabled />
+	    <br/>
+    </div>
+    <div>
+      Page Control:<br/>
+      <button type="button" id="b-previous" >Back</button>
+      <button type="button" id="b-next">Next</button>
+      <span id="t-current-step">0</span> / <span id="t-step-count">?</span>
+      <br/>
+    </div>
+    <div>
+      Jump to: <br/>
+      <input type="text" id="i-step-number" value="1" style="width: 24px;"/>
+      <button type="button" id="b-move-to-step">Jump to step</button>
+      <br/><br/>
+    </div>
+
+<div> <button type="button" id="fullscreen" >fullscreen</button> </div>
+<div> <button type="button" id="autoplay" >autoplay</button> </div>
+<div> <button type="button" id="pause" >pause</button> </div>
+<div> <button type="button" id="stop" >stop</button> </div>
+
+<script src="http://prezi.github.io/prezi-player/lib/PreziPlayer/prezi_player.js"></script>
+
+<script type= text/javascript>
+
+  document.getElementById("prezi-player").addEventListener("myEvent", function(e){
+    
+    var player = new PreziPlayer('prezi-player', {
+    preziId: e.detail,
+    width: 1024,
+    height: 768,
+    controls: true
+    });
+      
+    player.on(PreziPlayer.EVENT_STATUS, function(event) {
+      if (event.value == PreziPlayer.STATUS_CONTENT_READY) {
+        document.getElementById('i-title').value = player.getTitle();
+        document.getElementById('t-step-count').innerHTML = player.getStepCount();
+      }
+      });
+      
+      player.on(PreziPlayer.EVENT_CURRENT_STEP, function(event) {
+      document.getElementById('t-current-step').innerHTML = event.value;
+      });
+      
+      document.getElementById("b-previous").addEventListener('click', function(){
+        player.previousStep();
+      });
+      document.getElementById("b-next").addEventListener('click', function(){
+        player.nextStep();
+      });
+      document.getElementById("b-move-to-step").addEventListener('click', function(){
+        player.toStep(document.getElementById("i-step-number").value);
+      });
+      document.getElementById("link0").addEventListener('click', function(){
+        player.toStep(0);
+      });
+      document.getElementById("link1").addEventListener('click', function(){
+        player.toStep(1);
+      });
+      document.getElementById("link2").addEventListener('click', function(){
+        player.toStep(9);
+      });
+      document.getElementById("link3").addEventListener('click', function(){
+        player.toStep(17);
+      });
+      document.getElementById("link4").addEventListener('click', function(){
+        player.toStep(18);
+      });
+      document.getElementById("link5").addEventListener('click', function(){
+        player.toStep(19);
+      });
+     
+  });
+   
+</script>
+
+<script type= text/javascript>
+
+document.getElementById ("fullscreen").addEventListener("click", function() {
+    var
+          el = document.getElementById("prezi-player")
+        , rfs =
+               el.requestFullScreen
+            || el.webkitRequestFullScreen
+            || el.mozRequestFullScreen
+    ;
+    rfs.call(el);
+});
+</script>
+
+<script type=text/javascript>
+
+document.getElementById("autoplay").addEventListener('click', function(){
+    player.play(3000);
+});    
+document.getElementById("pause").addEventListener('click', function(){
+    player.pause(3000);
+});    
+document.getElementById("stop").addEventListener('click', function(){
+    player.stop();
+}); 
+</script> 
+
+    </body>
+</html>
